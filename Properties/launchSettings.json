@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "func_weather_assignment": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7141",
+      "launchBrowser": false
+    }
+  }
+}
