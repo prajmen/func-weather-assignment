@@ -262,3 +262,14 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+__blobstorage__/4a99adf8-ee5e-44c1-b77e-ef58183f9e4b
+__blobstorage__/4da4dda0-c6b2-439e-9bf5-f2b99eb141b0
+__blobstorage__/19d4d084-07e5-47fd-be2a-11ee8ff2779b
+__blobstorage__/2089c99b-1a65-44f4-a3fc-66a6b3176557
+__blobstorage__/71231f3a-d76b-4844-aae7-3bad29be5308
+__blobstorage__/a88f0173-b4f6-42e4-b3a9-e15313e0b8ce
+__blobstorage__/b4986eb7-b5d1-4f75-8182-cec266380331
+__blobstorage__/f9561d88-0be0-4992-a16e-d8de77bd9eeb
+__queuestorage__/dbc7bc94-c6ec-48c4-a2cb-0848ccfc3142
+__azurite_db_table__.json
