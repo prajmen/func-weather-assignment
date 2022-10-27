@@ -13,8 +13,8 @@ namespace WeatherAssignment.Functions
         public static async Task RunOrchestrator(
             [OrchestrationTrigger] IDurableOrchestrationContext context)
         {
-            var weatherData = new WeatherData();
-            weatherData.Timestamp = DateTimeOffset.UtcNow;
+            var weatherData = new WeatherData();          
+            weatherData.Timestamp = context.CurrentUtcDateTime;
             weatherData.CelsiusSMHI = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
             weatherData.CelsiusYR = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
             
