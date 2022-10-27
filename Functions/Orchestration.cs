@@ -6,26 +6,34 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-using WeatherAssignment;
+using WeatherAssignment.Functions;
+using WeatherAssignment.DTOs;
+using System;
 
 
-namespace WeatherAssignment
+namespace WeatherAssignment.Functions
 {
     public static class Orchestration
     {
         [FunctionName("Orchestration")]
-        public static async Task<List<string>> RunOrchestrator(
+        public static async Task RunOrchestrator(
             [OrchestrationTrigger] IDurableOrchestrationContext context)
         {
-            var outputs = new List<string>();
+            //var outputs = new List<double>();
 
+            var weatherData = new WeatherData();
+            weatherData.Timestamp = DateTimeOffset.UtcNow;
+            weatherData.CelsiusSMHI = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
+            weatherData.CelsiusYR = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
+            
+            await context.CallActivityAsync<WeatherData>(nameof(ActivityTriggerQueue.SaveToQueue), weatherData);
             // Replace "hello" with the name of your Durable Activity Function.
-            outputs.Add(await context.CallActivityAsync<string>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo"));
+            //outputs.Add(await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo"));
             //outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "Seattle"));
             //outputs.Add(await context.CallActivityAsync<string>(nameof(SayHello), "London"));
 
             // returns ["Hello Tokyo!", "Hello Seattle!", "Hello London!"]
-            return outputs;
+            //return weatherData;
         }
 
         [FunctionName(nameof(SayHello))]

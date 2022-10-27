@@ -8,16 +8,16 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace WeatherAssignment
+namespace WeatherAssignment.Functions
 {
-    public static class ActivityTriggerSMHI 
+    public static class ActivityTriggerYR
     {
         //För best practice, borde httpClient injectas
         //https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
         private static HttpClient httpClient = new HttpClient();
 
-        [FunctionName(nameof(GetWeatherDataSMHI))]
-        public static async Task<string> GetWeatherDataSMHI([ActivityTrigger] string name, ILogger log)
+        [FunctionName(nameof(GetWeatherDataYR))]
+        public static async Task<double> GetWeatherDataYR([ActivityTrigger] string name, ILogger log)
         {
             var url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/16.158/lat/58.5812/data.json";
             var response = await httpClient.GetAsync(url);
@@ -27,7 +27,7 @@ namespace WeatherAssignment
             }
             
             log.LogInformation($"Saying hello to {name}.");
-            return $"Hello!";
+            return 18.8;
         }
     }
 }
