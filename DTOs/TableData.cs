@@ -1,4 +1,4 @@
 namespace WeatherAssignment.DTOs 
 {
-    public record TableData(string RowKey, WeatherData data);
+    public record TableData(string PartitionKey, string RowKey, WeatherData data);
 }

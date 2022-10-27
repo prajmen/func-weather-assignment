@@ -21,7 +21,7 @@ namespace WeatherAssignment.Functions
 
             log.LogInformation("Saving to db");
 
-            return new TableData(
+            return new TableData("1",
                 $"{(DateTimeOffset.MaxValue.Ticks - data.Timestamp.Ticks):d10}-{Guid.NewGuid():N}",
                 data);
 
