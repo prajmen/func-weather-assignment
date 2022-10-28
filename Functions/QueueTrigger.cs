@@ -19,13 +19,14 @@ namespace WeatherAssignment.Functions
                 throw new InvalidOperationException();
             }
 
+            // Väg ihop väderdatat
+            var weightedTemperature = (data.CelsiusSMHI + data.CelsiusSMHI)/2;
+
             log.LogInformation("Saving to db");
 
             return new TableData("1",
                 $"{(DateTimeOffset.MaxValue.Ticks - data.Timestamp.Ticks):d10}-{Guid.NewGuid():N}",
-                data);
-
+                weightedTemperature);
         }
     }
 }
-
