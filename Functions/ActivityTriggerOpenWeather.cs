@@ -9,14 +9,19 @@ using System;
 
 namespace WeatherAssignment.Functions
 {
-    public static class ActivityTriggerOpenWeather
+    public class ActivityTriggerOpenWeather
     {
         //För best practice, borde httpClient injectas
         //https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
-        private static HttpClient httpClient = new HttpClient();
+        private readonly HttpClient _client;
+
+        public ActivityTriggerOpenWeather(IHttpClientFactory httpClientFactory)
+        {
+            _client = httpClientFactory.CreateClient();
+        }
 
         [FunctionName(nameof(GetWeatherDataOpenWeather))]
-        public static async Task<double> GetWeatherDataOpenWeather([ActivityTrigger] Coordinate coordinate, ILogger log)
+        public async Task<double> GetWeatherDataOpenWeather([ActivityTrigger] Coordinate coordinate, ILogger log)
         {
             var latitude = coordinate.Latitude.ToString().Replace(',','.');
             var longitude = coordinate.Longitude.ToString().Replace(',','.');
