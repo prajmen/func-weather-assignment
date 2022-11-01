@@ -30,7 +30,7 @@ namespace WeatherAssignment.Functions
             var url = $"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&units=metric&exclude=hourly,daily,minutely,alerts&appid={apiToken}";
             
             var request = new HttpRequestMessage(HttpMethod.Get, url); 
-            var response = await httpClient.GetAsync(url);
+            var response = await _client.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
