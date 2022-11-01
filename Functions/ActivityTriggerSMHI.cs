@@ -13,14 +13,17 @@ using System;
 
 namespace WeatherAssignment.Functions
 {
-    public static class ActivityTriggerSMHI 
+    public class ActivityTriggerSMHI 
     {
-        //För best practice, borde httpClient injectas
-        //https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
-        private static HttpClient httpClient = new HttpClient();
+        private readonly HttpClient _client;
+
+        public ActivityTriggerSMHI(IHttpClientFactory httpClientFactory)
+        {
+            _client = httpClientFactory.CreateClient();
+        }
 
         [FunctionName(nameof(GetWeatherDataSMHI))]
-        public static async Task<double> GetWeatherDataSMHI([ActivityTrigger] Coordinate coordinate, ILogger log)
+        public async Task<double> GetWeatherDataSMHI([ActivityTrigger] Coordinate coordinate, ILogger log)
         {
             var latitude = coordinate.Latitude.ToString().Replace(',','.');
             var longitude = coordinate.Longitude.ToString().Replace(',','.');
@@ -29,7 +32,7 @@ namespace WeatherAssignment.Functions
 
             log.LogInformation(url);
 
-            var response = await httpClient.GetAsync(url);
+            var response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 var json = response.Content.ReadAsStringAsync().Result;

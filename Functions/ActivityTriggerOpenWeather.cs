@@ -11,8 +11,6 @@ namespace WeatherAssignment.Functions
 {
     public class ActivityTriggerOpenWeather
     {
-        //För best practice, borde httpClient injectas
-        //https://learn.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection
         private readonly HttpClient _client;
 
         public ActivityTriggerOpenWeather(IHttpClientFactory httpClientFactory)
