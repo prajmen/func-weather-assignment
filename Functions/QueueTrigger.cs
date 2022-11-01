@@ -20,9 +20,11 @@ namespace WeatherAssignment.Functions
             }
 
             // Väg ihop väderdatat
-            var weightedTemperature = (data.CelsiusSMHI + data.CelsiusSMHI)/2;
+            var weightedTemperature = (data.CelsiusSMHI + data.CelsiusYR)/2;
 
             log.LogInformation("Saving to db");
+
+            log.LogInformation($"Inne i QueueTrigger sparas sammanvägd väderdata i table Storage. Värde som sparas: {weightedTemperature}");
 
             return new TableData("1",
                 $"{(DateTimeOffset.MaxValue.Ticks - data.Timestamp.Ticks):d10}-{Guid.NewGuid():N}",

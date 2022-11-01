@@ -22,6 +22,9 @@ namespace WeatherAssignment.Functions
         public static WeatherData SaveToQueue([ActivityTrigger] WeatherData input, ILogger log)
         {
             log.LogInformation($"Processing queue function: {input.Timestamp.ToString()}");
+
+            log.LogInformation($"Väderdata från SMHI inne i ActivityTrigger: {input.CelsiusSMHI} från YR: {input.CelsiusYR}");
+
             return input;
         }
     }

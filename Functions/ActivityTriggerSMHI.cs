@@ -7,6 +7,9 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Newtonsoft.Json;
+using WeatherAssignment.DTOs;
+using System;
 
 namespace WeatherAssignment.Functions
 {
@@ -19,15 +22,30 @@ namespace WeatherAssignment.Functions
         [FunctionName(nameof(GetWeatherDataSMHI))]
         public static async Task<double> GetWeatherDataSMHI([ActivityTrigger] string name, ILogger log)
         {
-            var url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/16.158/lat/58.5812/data.json";
+            var url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.02/lat/59.345/data.json";
             var response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 var json = response.Content.ReadAsStringAsync().Result;
+
+                RootSMHI data = JsonConvert.DeserializeObject<RootSMHI>(json);
+
+                var forecastTime = data.timeSeries[0].validTime;
+                var currentWeatherParameterName = data.timeSeries[0].parameters[10].name;
+                var currentAirTempCelsius = data.timeSeries[0].parameters[10].values[0];
+
+                log.LogInformation($" Weather from SMHI. Forecast for Nackademin at: {forecastTime}. Current air temp is: {currentAirTempCelsius}");
+
+                return currentAirTempCelsius;
             }
+            else
+            {
+                var statusCode = response.StatusCode.ToString();
+                log.LogInformation(statusCode);
+
+                throw new InvalidOperationException($"API response status code do not indicate success. Status code {statusCode}");
+            } 
             
-            log.LogInformation($"Saying hello to {name}.");
-            return 19.2;
         }
     }
 }
