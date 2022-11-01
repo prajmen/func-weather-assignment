@@ -20,9 +20,15 @@ namespace WeatherAssignment.Functions
         private static HttpClient httpClient = new HttpClient();
 
         [FunctionName(nameof(GetWeatherDataSMHI))]
-        public static async Task<double> GetWeatherDataSMHI([ActivityTrigger] string name, ILogger log)
+        public static async Task<double> GetWeatherDataSMHI([ActivityTrigger] Coordinate coordinate, ILogger log)
         {
-            var url = "https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/18.02/lat/59.345/data.json";
+            var latitude = coordinate.Latitude.ToString().Replace(',','.');
+            var longitude = coordinate.Longitude.ToString().Replace(',','.');
+
+            var url = $"https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/{longitude}/lat/{latitude}/data.json";
+
+            log.LogInformation(url);
+
             var response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
@@ -43,9 +49,8 @@ namespace WeatherAssignment.Functions
                 var statusCode = response.StatusCode.ToString();
                 log.LogInformation(statusCode);
 
-                throw new InvalidOperationException($"API response status code do not indicate success. Status code {statusCode}");
-            } 
-            
+                throw new InvalidOperationException($"SMHI response status code do not indicate success. Status code {statusCode}");
+            }             
         }
     }
 }
