@@ -16,7 +16,7 @@ namespace WeatherAssignment.Functions
             var weatherData = new WeatherData();          
             weatherData.Timestamp = context.CurrentUtcDateTime;
             weatherData.CelsiusSMHI = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
-            weatherData.CelsiusYR = await context.CallActivityAsync<double>(nameof(ActivityTriggerSMHI.GetWeatherDataSMHI), "Tokyo");
+            weatherData.CelsiusYR = await context.CallActivityAsync<double>(nameof(ActivityTriggerYR.GetWeatherDataYR), "Tokyo");
             
             await context.CallActivityAsync<WeatherData>(nameof(ActivityTriggerQueue.SaveToQueue), weatherData);
         }
